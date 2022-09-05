@@ -1,5 +1,8 @@
 package com.example.cryptocomposeapp.presentation.detail_coin
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,20 +14,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.cryptocomposeapp.presentation.detail_coin.components.CoinTag
 import com.example.cryptocomposeapp.presentation.detail_coin.components.TeamList
+import com.example.cryptocomposeapp.ui.theme.ListCoinActiveColor
+import com.example.cryptocomposeapp.ui.theme.ListCoinColor
 import com.google.accompanist.flowlayout.FlowRow
 
 @Composable
 fun CoinDetailWindow(
+    navController: NavController,
     viewModel: DetailCoinViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(ListCoinColor)
+            .padding(top = 35.dp)
+    ) {
         state.detailCoin?.let { coinDetail ->
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -36,32 +50,41 @@ fun CoinDetailWindow(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
+                        Image(
+                            painter = painterResource(id = com.example.cryptocomposeapp.R.drawable.ic_back_list),
+                            contentDescription = "Back list",
+                            modifier = Modifier
+                                .clickable { navController.navigateUp() }
+                                .align(Alignment.CenterVertically)
+                        )
                         Text(
                             text = "${coinDetail.rank}. ${coinDetail.name} (${coinDetail.symbol})",
                             style = MaterialTheme.typography.h2,
-                            modifier = Modifier.weight(8f)
+                            color = Color.White,
+                            fontSize = 22.sp
                         )
                         Text(
                             text = if (coinDetail.is_active) "active" else "inactive",
-                            color = if (coinDetail.is_active) Color.Green else Color.Red,
+                            color = if (coinDetail.is_active) ListCoinActiveColor else Color.Red,
                             fontStyle = FontStyle.Italic,
                             textAlign = TextAlign.End,
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-                                .weight(2f)
+                            modifier = Modifier.align(Alignment.CenterVertically)
                         )
                     }
                     Spacer(modifier = Modifier.height(15.dp))
                     Text(
                         text = coinDetail.description,
-                        style = MaterialTheme.typography.body2
+                        style = MaterialTheme.typography.body2,
+                        color = Color.White
                     )
                     Spacer(modifier = Modifier.height(15.dp))
                     Text(
                         text = "Tags",
-                        style = MaterialTheme.typography.h3
+                        style = MaterialTheme.typography.h3,
+                        color = Color.White
                     )
                     Spacer(modifier = Modifier.height(15.dp))
+
                     // Вид строки, в которой расположение элементов определяется в зависимости от ширины элементов,
                     // если превышает - переносится на новую строку
                     FlowRow(
@@ -76,7 +99,8 @@ fun CoinDetailWindow(
                     Spacer(modifier = Modifier.height(15.dp))
                     Text(
                         text = "Team member",
-                        style = MaterialTheme.typography.h3
+                        style = MaterialTheme.typography.h3,
+                        color = Color.White
                     )
                     Spacer(modifier = Modifier.height(15.dp))
                 }
@@ -87,7 +111,7 @@ fun CoinDetailWindow(
                             .padding(10.dp)
                     )
                     // Разделительная черта между элементами
-                    Divider()
+                    Divider(modifier = Modifier.background(Color.White))
                 }
             }
         }

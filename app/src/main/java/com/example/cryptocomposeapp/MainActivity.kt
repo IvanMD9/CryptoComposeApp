@@ -3,6 +3,7 @@ package com.example.cryptocomposeapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -16,7 +17,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        // Нужно для прозрачности statusBar + установка прозрачного цвета в теме приложения
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             CryptoComposeAppTheme {
                 val navController = rememberNavController()
@@ -31,7 +33,7 @@ class MainActivity : ComponentActivity() {
                         CoinListWindow(navController = navController)
                     }
                     composable(route = NavigationScreens.DetailScreen.route + "/{coin_detail}") {
-                        CoinDetailWindow()
+                        CoinDetailWindow(navController = navController)
                     }
                 }
             }

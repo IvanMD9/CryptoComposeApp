@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.cryptocomposeapp.domain.model.ListCoins
+import com.example.cryptocomposeapp.ui.theme.ListCoinActiveColor
 
 @Composable
 fun CoinListItem(
@@ -31,11 +32,12 @@ fun CoinListItem(
         Text(
             text = "${coinItem.rank}. ${coinItem.name} (${coinItem.symbol})",
             style = MaterialTheme.typography.body1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            color = Color.White
         )
         Text(
             text = if (coinItem.is_active) "active" else "inactive",
-            color = if (coinItem.is_active) Color.Green else Color.Red,
+            color = if (coinItem.is_active) ListCoinActiveColor else Color.Red,
             fontStyle = FontStyle.Italic,
             textAlign = TextAlign.End,
             style = MaterialTheme.typography.body2,
