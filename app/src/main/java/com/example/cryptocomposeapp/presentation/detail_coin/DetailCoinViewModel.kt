@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cryptocomposeapp.domain.use_case.DetailCoinUseCase
+import com.example.cryptocomposeapp.domain.use_case.list.DetailCoinUseCase
 import com.example.cryptocomposeapp.utils.Constants
 import com.example.cryptocomposeapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailCoinViewModel @Inject constructor(
     private val detailCoinUseCase: DetailCoinUseCase,
-    stateHandle: SavedStateHandle
+    stateHandle : SavedStateHandle
 ) : ViewModel() {
 
     private val _state = mutableStateOf(StateDetailCoin())

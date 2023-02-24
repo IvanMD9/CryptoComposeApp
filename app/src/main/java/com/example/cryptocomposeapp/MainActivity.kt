@@ -3,13 +3,26 @@ package com.example.cryptocomposeapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.cryptocomposeapp.presentation.detail_coin.CoinDetailWindow
-import com.example.cryptocomposeapp.presentation.list_coin.CoinListWindow
-import com.example.cryptocomposeapp.presentation.spalsh_screen.SplashWindow
+import com.example.cryptocomposeapp.navigation.AppNavGraph
+import com.example.cryptocomposeapp.navigation.ButtonNavItem
+import com.example.cryptocomposeapp.navigation.rememberNavigationState
 import com.example.cryptocomposeapp.ui.theme.CryptoComposeAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,20 +34,41 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             CryptoComposeAppTheme {
-                val navController = rememberNavController()
-                NavHost(
-                    navController = navController,
-                    startDestination = NavigationScreens.SplashScreen.route
+                val navigationState = rememberNavigationState()
+                Scaffold(
+                    bottomBar = {
+                        BottomNavigation(modifier = Modifier.height(90.dp)) {
+                            val backStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
+
+                            val items = listOf(
+                                ButtonNavItem.List,
+                                ButtonNavItem.Favourites,
+                            )
+                            items.forEach { item ->
+
+                                val selected = backStackEntry?.destination?.hierarchy?.any {
+                                    it.route == item.route
+                                } ?: false
+
+                                BottomNavigationItem(
+                                    selected = selected,
+                                    onClick = { if (!selected) navigationState.navigateTo(item.route) },
+                                    selectedContentColor = Color.White,
+                                    unselectedContentColor = Color.Gray,
+                                    icon = {
+                                        Icon(
+                                            painter = painterResource(id = item.image),
+                                            contentDescription = null,
+                                            modifier = Modifier
+                                                .padding(bottom = 45.dp)
+                                        )
+                                    }
+                                )
+                            }
+                        }
+                    }
                 ) {
-                    composable(route = NavigationScreens.SplashScreen.route) {
-                        SplashWindow(navController = navController)
-                    }
-                    composable(route = NavigationScreens.ListScreen.route) {
-                        CoinListWindow(navController = navController)
-                    }
-                    composable(route = NavigationScreens.DetailScreen.route + "/{coin_detail}") {
-                        CoinDetailWindow(navController = navController)
-                    }
+                    AppNavGraph(navHostController = navigationState.navHostController)
                 }
             }
         }

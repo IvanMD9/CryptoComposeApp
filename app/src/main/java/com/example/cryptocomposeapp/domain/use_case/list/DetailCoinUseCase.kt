@@ -1,8 +1,8 @@
-package com.example.cryptocomposeapp.domain.use_case
+package com.example.cryptocomposeapp.domain.use_case.list
 
 import com.example.cryptocomposeapp.data.remote.model.toDetailCoin
 import com.example.cryptocomposeapp.domain.model.CoinDetail
-import com.example.cryptocomposeapp.domain.repository.RepositoryCoin
+import com.example.cryptocomposeapp.domain.repository.RepositoryCoins
 import com.example.cryptocomposeapp.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -11,18 +11,18 @@ import java.io.IOException
 import javax.inject.Inject
 
 class DetailCoinUseCase @Inject constructor(
-    private val repositoryCoin: RepositoryCoin
+    private val repositoryCoin: RepositoryCoins
 ) {
 
     operator fun invoke(id : String) : Flow<Resource<CoinDetail>> = flow {
         try {
-            emit(Resource.Loading<CoinDetail>())
+            emit(Resource.Loading())
             val detailCoin = repositoryCoin.getDetailCoin(id).toDetailCoin()
-            emit(Resource.Success<CoinDetail>(detailCoin))
+            emit(Resource.Success(detailCoin))
         } catch (e : HttpException) {
-            emit(Resource.Error<CoinDetail>(e.localizedMessage ?: "An unexpected error"))
+            emit(Resource.Error(e.localizedMessage ?: "An unexpected error"))
         } catch (e : IOException) {
-            emit(Resource.Error<CoinDetail>("Check you connection Internet"))
+            emit(Resource.Error("Check you connection Internet"))
         }
     }
 }

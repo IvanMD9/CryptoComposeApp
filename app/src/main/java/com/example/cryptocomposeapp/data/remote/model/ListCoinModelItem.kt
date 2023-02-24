@@ -7,7 +7,7 @@ data class ListCoinModelItem(
     val is_active: Boolean,
     val name: String,
     val rank: Int,
-    val symbol: String,
+    val symbol: String
 )
 
 fun ListCoinModelItem.toListCoins() : ListCoins {

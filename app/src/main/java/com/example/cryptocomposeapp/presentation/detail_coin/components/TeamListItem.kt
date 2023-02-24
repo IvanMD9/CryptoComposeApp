@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import com.example.cryptocomposeapp.data.remote.model.Team
-import com.example.cryptocomposeapp.ui.theme.ListCoinActiveColor
 
 @Composable
 fun TeamList(

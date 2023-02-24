@@ -1,4 +1,4 @@
-package com.example.cryptocomposeapp.presentation.list_coin.componets
+package com.example.cryptocomposeapp.presentation.favourite.componets
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -18,18 +18,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.cryptocomposeapp.R
-import com.example.cryptocomposeapp.domain.model.ListCoins
+import com.example.cryptocomposeapp.domain.model.FavouriteCoin
 import com.example.cryptocomposeapp.ui.theme.ListCoinActiveColor
 
 @Composable
-fun CoinListItem(
-    coinItem: ListCoins,
-    coinClickItem: () -> Unit,
-    coinAddFavourite: () -> Unit,
+fun CoinFavourite(
+    coinItem: FavouriteCoin,
+    coinDeleteFavourite: () -> Unit,
 ) {
     Row(modifier = Modifier
         .fillMaxWidth()
-        .clickable { coinClickItem() }
         .padding(20.dp),
         horizontalArrangement = Arrangement.SpaceBetween)
     {
@@ -48,8 +46,8 @@ fun CoinListItem(
             modifier = Modifier.align(CenterVertically)
         )
         Image(
-            painter = painterResource(id = R.drawable.add_fav),
+            painter = painterResource(id = R.drawable.add_fav_coin),
             contentDescription = null,
-            modifier = Modifier.clickable { coinAddFavourite() })
+            modifier = Modifier.clickable { coinDeleteFavourite() })
     }
 }
