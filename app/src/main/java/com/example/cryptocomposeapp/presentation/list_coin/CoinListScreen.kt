@@ -1,6 +1,5 @@
 package com.example.cryptocomposeapp.presentation.list_coin
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,7 +7,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -40,7 +41,6 @@ fun CoinListWindow(
                 viewModel.onEvent(
                     Event.SearchQuery(it)
                 )
-                Log.d("TAG", "${viewModel.onEvent(Event.SearchQuery(it))} ---- Event.SearchQuery")
             },
             modifier = Modifier
                 .padding(16.dp)
@@ -48,10 +48,10 @@ fun CoinListWindow(
             placeholder = {
                 Text(text = "Search...", color = Color.White)
             },
+            colors = TextFieldDefaults.textFieldColors(textColor = Color.White),
             maxLines = 1,
             singleLine = true
         )
-        Log.d("TAG", "${state.searchQuery} ------- result")
         Spacer(modifier = Modifier.height(15.dp))
         LazyColumn(
             modifier = Modifier
@@ -76,15 +76,17 @@ fun CoinListWindow(
                 }
             }
         }
-        // Если ошибка, то показать текст с ошибкой
-        if (state.error.isNotBlank()) {
-            Text(
-                text = state.error, color = MaterialTheme.colors.error,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp)
-            )
+        Box(contentAlignment = Alignment.Center) {
+            // Если ошибка, то показать текст с ошибкой
+            if (state.error.isNotBlank()) {
+                Text(
+                    text = state.error, color = MaterialTheme.colors.error,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp)
+                )
+            }
         }
     }
 }

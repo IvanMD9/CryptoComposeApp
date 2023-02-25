@@ -1,6 +1,5 @@
 package com.example.cryptocomposeapp.presentation.list_coin
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -9,7 +8,6 @@ import com.example.cryptocomposeapp.domain.model.FavouriteCoin
 import com.example.cryptocomposeapp.domain.repository.RepositoryCoins
 import com.example.cryptocomposeapp.domain.use_case.favourite.AddFavouriteUseCase
 import com.example.cryptocomposeapp.domain.use_case.list.ListCoinsUseCase
-import com.example.cryptocomposeapp.domain.use_case.list.SearchCoinsUseCase
 import com.example.cryptocomposeapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -24,7 +22,6 @@ class ListCoinsViewModel @Inject constructor(
     private val listCoinsUseCase: ListCoinsUseCase,
     private val addFavouriteUseCase: AddFavouriteUseCase,
     private val repositoryCoins: RepositoryCoins
-    //private val searchCoinsUseCase: SearchCoinsUseCase
 ) : ViewModel() {
 
     private val _state = mutableStateOf(StateListCoins())
@@ -78,7 +75,6 @@ class ListCoinsViewModel @Inject constructor(
                             res.data?.let {
                                 _state.value = state.value.copy(listCoins = it)
                             }
-                            Log.d("TAG", "${res.data} ----- Resource.Success")
                         }
                         is Resource.Error -> Unit
                     }
