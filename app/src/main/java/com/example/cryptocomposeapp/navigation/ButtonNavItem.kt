@@ -5,17 +5,17 @@ import com.example.cryptocomposeapp.R
 sealed class ButtonNavItem(
     val id: Int,
     val image: Int,
-    val route: String
+    val screen: NavigationScreens
 ) {
-    object List : ButtonNavItem(
+    object Home : ButtonNavItem(
         R.string.nav_item_list,
         R.drawable.list_coins,
-        NavigationScreens.ListScreen.route
+        NavigationScreens.HomeScreen
     )
 
     object Favourites : ButtonNavItem(
         R.string.nav_item_fav,
         R.drawable.fav_coin,
-        NavigationScreens.FavouriteScreen.route
+        NavigationScreens.FavouriteScreen
     )
 }

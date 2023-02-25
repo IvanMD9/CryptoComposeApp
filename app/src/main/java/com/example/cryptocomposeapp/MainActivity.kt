@@ -1,5 +1,6 @@
 package com.example.cryptocomposeapp
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,6 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Нужно для прозрачности statusBar + установка прозрачного цвета в теме приложения
@@ -41,18 +43,18 @@ class MainActivity : ComponentActivity() {
                             val backStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
 
                             val items = listOf(
-                                ButtonNavItem.List,
+                                ButtonNavItem.Home,
                                 ButtonNavItem.Favourites,
                             )
                             items.forEach { item ->
 
                                 val selected = backStackEntry?.destination?.hierarchy?.any {
-                                    it.route == item.route
+                                    it.route == item.screen.route
                                 } ?: false
 
                                 BottomNavigationItem(
                                     selected = selected,
-                                    onClick = { if (!selected) navigationState.navigateTo(item.route) },
+                                    onClick = { if (!selected) navigationState.navigateTo(item.screen.route) },
                                     selectedContentColor = Color.White,
                                     unselectedContentColor = Color.Gray,
                                     icon = {

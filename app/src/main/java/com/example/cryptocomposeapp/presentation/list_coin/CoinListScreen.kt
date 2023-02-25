@@ -2,20 +2,15 @@ package com.example.cryptocomposeapp.presentation.list_coin
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,8 +18,8 @@ import androidx.navigation.NavController
 import com.example.cryptocomposeapp.data.mapper.toFavourite
 import com.example.cryptocomposeapp.navigation.NavigationScreens
 import com.example.cryptocomposeapp.presentation.list_coin.componets.CoinListItem
+import com.example.cryptocomposeapp.presentation.list_coin.componets.ShimmerLoadingList
 import com.example.cryptocomposeapp.ui.theme.ListCoinColor
-import kotlinx.coroutines.launch
 
 @Composable
 fun CoinListWindow(
@@ -33,27 +28,52 @@ fun CoinListWindow(
 ) {
     val state = viewModel.state.value
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(ListCoinColor)
             .padding(top = 35.dp)
     ) {
+        OutlinedTextField(
+            value = state.searchQuery,
+            onValueChange = {
+                viewModel.onEvent(
+                    Event.SearchQuery(it)
+                )
+                Log.d("TAG", "${viewModel.onEvent(Event.SearchQuery(it))} ---- Event.SearchQuery")
+            },
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            placeholder = {
+                Text(text = "Search...", color = Color.White)
+            },
+            maxLines = 1,
+            singleLine = true
+        )
+        Log.d("TAG", "${state.searchQuery} ------- result")
+        Spacer(modifier = Modifier.height(15.dp))
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = 30.dp)
         ) {
-            items(state.listCoins) { coin ->
-                CoinListItem(
-                    coinItem = coin,
-                    coinClickItem = {
-                        navController.navigate(NavigationScreens.DetailScreen.route + "/${coin.id}")
-                    },
-                    coinAddFavourite = {
-                        viewModel.addFavourite(coin.toFavourite())
-                    }
-                )
+            if (state.isLoading) {
+                items(20) {
+                    ShimmerLoadingList()
+                }
+            } else {
+                items(state.listCoins) { coin ->
+                    CoinListItem(
+                        coinItem = coin,
+                        coinClickItem = {
+                            navController.navigate(NavigationScreens.DetailScreen.route + "/${coin.id}")
+                        },
+                        coinAddFavourite = {
+                            viewModel.addFavourite(coin.toFavourite())
+                        }
+                    )
+                }
             }
         }
         // Если ошибка, то показать текст с ошибкой
@@ -64,12 +84,7 @@ fun CoinListWindow(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(20.dp)
-                    .align(Alignment.Center)
             )
-        }
-        // Отображать ProgressBar при загрузке
-        if (state.isLoading) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
     }
 }

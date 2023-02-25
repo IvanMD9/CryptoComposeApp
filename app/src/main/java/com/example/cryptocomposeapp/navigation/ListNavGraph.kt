@@ -7,12 +7,12 @@ import androidx.navigation.navigation
 import com.example.cryptocomposeapp.presentation.detail_coin.CoinDetailWindow
 import com.example.cryptocomposeapp.presentation.list_coin.CoinListWindow
 
-fun NavGraphBuilder.listNavGraph(
+fun NavGraphBuilder.homeNavGraph(
     navHostController: NavHostController
 ) {
     navigation(
         startDestination = NavigationScreens.ListScreen.route,
-        route = NavigationScreens.ListScreen.route
+        route = NavigationScreens.HomeScreen.route
     ) {
         composable(route = NavigationScreens.ListScreen.route) {
             CoinListWindow(navController = navHostController)

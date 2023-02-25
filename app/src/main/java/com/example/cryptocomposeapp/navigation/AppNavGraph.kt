@@ -15,19 +15,10 @@ fun AppNavGraph(
 ) {
     NavHost(
         navController = navHostController,
-        startDestination = NavigationScreens.ListScreen.route
+        startDestination = NavigationScreens.HomeScreen.route
     ) {
+        homeNavGraph(navHostController)
 
-//        composable(NavigationScreens.SplashScreen.route) {
-//            SplashWindow(navController = navHostController)
-//        }
-
-        composable(route = NavigationScreens.ListScreen.route) {
-            CoinListWindow(navController = navHostController)
-        }
-        composable(route = NavigationScreens.DetailScreen.route + "/{coin_detail}") {
-            CoinDetailWindow(navController = navHostController)
-        }
         composable(NavigationScreens.FavouriteScreen.route) {
             FavouriteWindow()
         }

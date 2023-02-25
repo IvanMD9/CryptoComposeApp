@@ -26,6 +26,7 @@ fun CoinListItem(
     coinItem: ListCoins,
     coinClickItem: () -> Unit,
     coinAddFavourite: () -> Unit,
+    //isAddFavourite: Boolean
 ) {
     Row(modifier = Modifier
         .fillMaxWidth()

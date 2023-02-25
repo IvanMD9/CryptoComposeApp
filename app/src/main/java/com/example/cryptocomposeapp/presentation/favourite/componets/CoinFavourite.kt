@@ -24,7 +24,7 @@ import com.example.cryptocomposeapp.ui.theme.ListCoinActiveColor
 @Composable
 fun CoinFavourite(
     coinItem: FavouriteCoin,
-    coinDeleteFavourite: () -> Unit,
+    coinDeleteFavourite: () -> Unit
 ) {
     Row(modifier = Modifier
         .fillMaxWidth()

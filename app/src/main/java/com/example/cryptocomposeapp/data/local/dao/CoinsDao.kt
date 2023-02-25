@@ -9,12 +9,15 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CoinsDao {
-
     @Query("SELECT * FROM coins")
     fun getAllCoins() : Flow<List<ListCoinsEntity>>
 
+    @Query("SELECT * FROM coins WHERE LOWER(name) LIKE '%' || LOWER(:query) || '%' OR UPPER(:query)")
+    suspend fun searchCoins(query: String): List<ListCoinsEntity>
+
+    @Query("DELETE FROM coins")
+    suspend fun clearCoins()
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCoins(
-        companyListingEntities: List<ListCoinsEntity>
-    )
+    suspend fun insertCoins(companyListingEntities: List<ListCoinsEntity>)
 }

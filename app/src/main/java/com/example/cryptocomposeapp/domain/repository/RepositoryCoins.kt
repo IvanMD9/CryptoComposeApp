@@ -7,5 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface RepositoryCoins {
     fun getListCoins() : Flow<Resource<List<ListCoins>>>
+    fun searchCoins(query : String) : Flow<Resource<List<ListCoins>>>
     suspend fun getDetailCoin(id : String) : CoinItemDetailModel
 }

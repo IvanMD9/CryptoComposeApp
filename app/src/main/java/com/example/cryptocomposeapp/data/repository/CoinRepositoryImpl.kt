@@ -1,6 +1,7 @@
 package com.example.cryptocomposeapp.data.repository
 
 import com.example.cryptocomposeapp.data.local.Database
+import com.example.cryptocomposeapp.data.mapper.toCoins
 import com.example.cryptocomposeapp.data.mapper.toListCoinsEntity
 import com.example.cryptocomposeapp.data.remote.api.CoinApi
 import com.example.cryptocomposeapp.data.remote.model.CoinItemDetailModel
@@ -30,6 +31,19 @@ class CoinRepositoryImpl @Inject constructor(
             emit(Resource.Error(e.localizedMessage ?: "An unexpected error"))
         } catch (e: IOException) {
             emit(Resource.Error("Check you connection Internet"))
+        }
+    }
+
+    override fun searchCoins(query: String): Flow<Resource<List<ListCoins>>> = flow {
+        emit(Resource.Loading(true))
+        val searchCoins = dao.searchCoins(query)
+        emit(Resource.Success(searchCoins.map { it.toCoins() }))
+
+        val isDbEmpty = searchCoins.isEmpty() && query.isBlank()
+        val shouldJustLoadFromCache = !isDbEmpty
+        if (shouldJustLoadFromCache) {
+            emit(Resource.Loading(false))
+            return@flow
         }
     }
 
